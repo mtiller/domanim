@@ -3,6 +3,95 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { createStringProcessor } from "../index.js";
 
+// ---------------------------------------------------------------------------
+// interp() and cinterp() — unit tests via createStringProcessor expressions
+// ---------------------------------------------------------------------------
+describe("interp() via createStringProcessor", () => {
+  const html = `<rect id="r" fill="#000000"/>`;
+
+  test("maps vmin to ymin", () => {
+    const p = createStringProcessor(
+      { "#r": { to: "attr", attr: "data-val", expr: "interp(v, 0, 100, 0, 255)" } },
+      html
+    );
+    expect(p({ v: 0 })).toMatchSnapshot();
+  });
+
+  test("maps vmax to ymax", () => {
+    const p = createStringProcessor(
+      { "#r": { to: "attr", attr: "data-val", expr: "interp(v, 0, 100, 0, 255)" } },
+      html
+    );
+    expect(p({ v: 100 })).toMatchSnapshot();
+  });
+
+  test("linearly interpolates at midpoint", () => {
+    const p = createStringProcessor(
+      { "#r": { to: "attr", attr: "data-val", expr: "interp(v, 0, 100, 0, 200)" } },
+      html
+    );
+    expect(p({ v: 50 })).toMatchSnapshot();
+  });
+
+  test("interpolates fractional values", () => {
+    const p = createStringProcessor(
+      { "#r": { to: "attr", attr: "data-val", expr: "interp(v, 0, 1, 10, 20)" } },
+      html
+    );
+    expect(p({ v: 0.25 })).toMatchSnapshot();
+  });
+});
+
+describe("cinterp() via createStringProcessor", () => {
+  const html = `<rect id="r" fill="#000000"/>`;
+
+  test("returns cmin color at vmin", () => {
+    const p = createStringProcessor(
+      {
+        "#r": {
+          to: "attr",
+          attr: "fill",
+          expr: "cinterp(v, 0, 100, '#ff0000', '#0000ff')",
+        },
+      },
+      html
+    );
+    expect(p({ v: 0 })).toMatchSnapshot();
+  });
+
+  test("returns cmax color at vmax", () => {
+    const p = createStringProcessor(
+      {
+        "#r": {
+          to: "attr",
+          attr: "fill",
+          expr: "cinterp(v, 0, 100, '#ff0000', '#0000ff')",
+        },
+      },
+      html
+    );
+    expect(p({ v: 100 })).toMatchSnapshot();
+  });
+
+  test("returns interpolated color at midpoint", () => {
+    const p = createStringProcessor(
+      {
+        "#r": {
+          to: "attr",
+          attr: "fill",
+          expr: "cinterp(v, 0, 100, '#000000', '#ffffff')",
+        },
+      },
+      html
+    );
+    expect(p({ v: 50 })).toMatchSnapshot();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Integration: interp/cinterp applied to powerplant.svg
+// ---------------------------------------------------------------------------
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const svg = readFileSync(join(__dirname, "../../powerplant.svg"), "utf-8");
 
@@ -100,5 +189,33 @@ describe("createStringProcessor with powerplant.svg", () => {
       svg
     );
     expect(processor({ fill_color: "#aaddff" })).toMatchSnapshot();
+  });
+
+  test("uses interp() to drive SVG width from a data value", () => {
+    // Maps output_pct (0–100) → width 200px–800px
+    const processor = createStringProcessor(
+      { svg: { to: "attr", attr: "width", expr: "interp(output_pct, 0, 100, 200, 800)" } },
+      svg
+    );
+    expect(processor({ output_pct: 0 })).toMatchSnapshot();
+    expect(processor({ output_pct: 50 })).toMatchSnapshot();
+    expect(processor({ output_pct: 100 })).toMatchSnapshot();
+  });
+
+  test("uses cinterp() to color the accent rect based on temperature", () => {
+    // Maps temperature (0–100) from green (#00cc44) to red (#ea5a47)
+    const processor = createStringProcessor(
+      {
+        'rect[fill="#ea5a47"]': {
+          to: "attr",
+          attr: "fill",
+          expr: "cinterp(temperature, 0, 100, '#00cc44', '#ea5a47')",
+        },
+      },
+      svg
+    );
+    expect(processor({ temperature: 0 })).toMatchSnapshot();
+    expect(processor({ temperature: 50 })).toMatchSnapshot();
+    expect(processor({ temperature: 100 })).toMatchSnapshot();
   });
 });

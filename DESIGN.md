@@ -32,7 +32,9 @@ These can be represented by a simple `Record<string, Application | Application[]
 
 ### Keys
 
-The keys in the mapping are just CSS selectors.
+The keys in the mapping are just CSS selectors. Since the keys are Jsonata
+expressions and Jsonata expressions can be compiled, the keys should be compiled
+once when the mapping is passed in for performance reasons.
 
 ### Values
 
@@ -44,7 +46,7 @@ The `Application` type is defined in TypeScript as follows:
 ```typescript
 export interface TextApplication {
   to: "text";
-  // JMESPath expression used to evaluate the data object
+  // JSonata expression used to evaluate the data object
   expr: string;
 }
 
@@ -52,7 +54,7 @@ export interface AttrApplication {
   to: "attr";
   // Which attribute is being targeted
   attr: string;
-  // JMESPath expression used to evaluate the data object
+  // JSonata expression used to evaluate the data object
   expr: string;
 }
 
@@ -60,7 +62,7 @@ export interface ClassApplication {
   to: "class";
   // Which classname should be toggled
   name: string;
-  // JMESPath expression used to evaluate the data object
+  // JSonata expression used to evaluate the data object
   expr: string;
 }
 
@@ -72,13 +74,13 @@ each key value in the mapping. Then it should process each `Application` object.
 
 For a text application object, it should replace the `textContent` field of all
 nodes matching the selector with the stringified result of evaluating the `expr`
-field as a JMESPath expression using the data object as context.
+field as a JSonata expression using the data object as context.
 
 The attribute application should do the same thing except that the evaluation
 result should be injected as the value of the attribute specified by `attr` on
 each matching node.
 
-Finally, a class application should use the result of evaluating the JMESPath
+Finally, a class application should use the result of evaluating the JSonata
 expression as a "truthy" value. If the result is truthy then the specified
 `class` (as indicated by the `name` field) should be added to the list of
 classes associated with the matching node. If it is falsy, the code should
@@ -94,3 +96,24 @@ applied using Cheerio selectors applied to the string. The function returned by
 serialized HTML/SVG) instead of void (as in the case of `createProcessor`).
 
 The mapping should function exactly the same for this static case.
+
+## Use Case: Numerical and Color Interpolation
+
+Use the `registerFunction` API to add two new built-in functions for
+JSonata.
+
+### Numerical Interpolation
+
+The first function is `interp(v, vmin, vmax, ymin, ymax)`. If the `v` argument
+equals `vmin`, then the result of this function should be `ymin`. Similarly, if
+the `v` argument equals `vmax`, then the result of this function should be
+`ymax`. If `v` is between `vmin` and `vmax`, then the result of the function
+should be linearly interpolated between `ymin` and `ymax`.
+
+### Color Interpolation
+
+The second function is `cinterp(v, vmin, vmax, cmin, cmax)`. This function
+similar to `interp` except that `cmin` and `cmax` are **colors** and the
+function should return an interpolated color. Use the NPM package `color-parse`
+to parse `cmin` and `cmax` and then interpolate the components in the resulting
+object to arrive at the interpolated color.

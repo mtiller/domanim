@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm test)"
+      "Bash(npm test)",
+      "Bash(npm show color-parse --json)",
+      "Bash(node -e \"const j = require\\(''./node_modules/jmespath/jmespath.js''\\); console.log\\(Object.keys\\(j\\)\\)\")",
+      "Bash(npm show @jmespath/jmespath.js --json)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''version:'', d.get\\(''version''\\)\\); print\\(''types:'', d.get\\(''types'', ''none''\\)\\)\")",
+      "Bash(npm show jmespath-plus --json)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''version:'', d.get\\(''version''\\)\\); print\\(''keywords:'', d.get\\(''keywords''\\)\\)\")",
+      "Bash(npm install color-parse)"
     ]
   }
 }
