@@ -1,4 +1,5 @@
 import { search } from "jmespath";
+import { load } from "cheerio";
 
 export interface TextApplication {
   to: "text";
@@ -56,5 +57,37 @@ export function createProcessor(
         }
       }
     }
+  };
+}
+
+export function createStringProcessor(
+  mapping: Record<string, Application | Application[]>,
+  html: string
+): (data: unknown) => string {
+  return (data: unknown) => {
+    const $ = load(html, {}, false);
+    for (const [selector, applications] of Object.entries(mapping)) {
+      const nodes = $(selector);
+      const apps = Array.isArray(applications) ? applications : [applications];
+      for (const app of apps) {
+        const result = search(data, app.expr);
+        switch (app.to) {
+          case "text":
+            nodes.text(String(result ?? ""));
+            break;
+          case "attr":
+            nodes.attr(app.attr, String(result ?? ""));
+            break;
+          case "class":
+            if (result) {
+              nodes.addClass(app.name);
+            } else {
+              nodes.removeClass(app.name);
+            }
+            break;
+        }
+      }
+    }
+    return $.html();
   };
 }

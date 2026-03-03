@@ -83,3 +83,14 @@ expression as a "truthy" value. If the result is truthy then the specified
 `class` (as indicated by the `name` field) should be added to the list of
 classes associated with the matching node. If it is falsy, the code should
 ensure that that class is not present on any of the matching nodes.
+
+## Use Case: Static Strings
+
+There should also be a function named `createStringProcessor` that is passed the
+mapping and a static string and returns a closure that processes each data
+object. The string should be parsed by Cheerio and the modifications should be
+applied using Cheerio selectors applied to the string. The function returned by
+`createStringProcessor` should return a `string` (representing the full
+serialized HTML/SVG) instead of void (as in the case of `createProcessor`).
+
+The mapping should function exactly the same for this static case.
