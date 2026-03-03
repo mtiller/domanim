@@ -1,0 +1,12 @@
+{
+  "name": "dom-anim",
+  "version": "1.0.0",
+  "description": "Tool to animate DOM elements",
+  "license": "MIT",
+  "author": "Michael M. Tiller",
+  "type": "esm",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  }
+}
