@@ -13,7 +13,7 @@ const processor = createProcessor({
   // and one ClassApplication here.
 
   // Accent band colour: cool green when cold, alarm red when hot
-  'rect[fill="#ea5a47"]': {
+  "#cloud": {
     to: "attr",
     attr: "fill",
     expr: "$cinterp(temperature, 0, 100, '#00cc44', '#ea5a47')",
@@ -32,6 +32,11 @@ const processor = createProcessor({
     name: "alarm",
     expr: "alarm",
   },
+
+  "#temp": {
+    to: "text",
+    expr: "$string(temperature) & '°C'",
+  },
 });
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -39,20 +44,17 @@ const processor = createProcessor({
 function readControls(): { temperature: number; load: number; alarm: boolean } {
   return {
     temperature: Number(
-      (document.getElementById("temperature") as HTMLInputElement).value
+      (document.getElementById("temperature") as HTMLInputElement).value,
     ),
-    load: Number(
-      (document.getElementById("load") as HTMLInputElement).value
-    ),
+    load: Number((document.getElementById("load") as HTMLInputElement).value),
     alarm: (document.getElementById("alarm") as HTMLInputElement).checked,
   };
 }
 
 async function update(): Promise<void> {
   const data = readControls();
-  document.getElementById(
-    "temperature-display"
-  )!.textContent = `${data.temperature}°C`;
+  document.getElementById("temperature-display")!.textContent =
+    `${data.temperature}°C`;
   document.getElementById("load-display")!.textContent = `${data.load}%`;
   await processor(data);
 }
@@ -63,9 +65,7 @@ document
   .getElementById("temperature")!
   .addEventListener("input", () => void update());
 
-document
-  .getElementById("load")!
-  .addEventListener("input", () => void update());
+document.getElementById("load")!.addEventListener("input", () => void update());
 
 document
   .getElementById("alarm")!
