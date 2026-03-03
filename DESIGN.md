@@ -116,4 +116,5 @@ The second function is `cinterp(v, vmin, vmax, cmin, cmax)`. This function
 similar to `interp` except that `cmin` and `cmax` are **colors** and the
 function should return an interpolated color. Use the NPM package `color-parse`
 to parse `cmin` and `cmax` and then interpolate the components in the resulting
-object to arrive at the interpolated color.
+object to arrive at the interpolated color. The interpolation should also
+handle interpolating alpha values if present.

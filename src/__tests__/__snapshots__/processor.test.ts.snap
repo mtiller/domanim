@@ -1,10 +1,24 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`cinterp() via createStringProcessor returns cmax color at vmax 1`] = `"<rect id="r" fill="#0000ff"></rect>"`;
+exports[`$cinterp() via createStringProcessor interpolates alpha when colors have transparency 1`] = `"<rect id="r" fill="rgba(255, 0, 0, 0)"></rect>"`;
 
-exports[`cinterp() via createStringProcessor returns cmin color at vmin 1`] = `"<rect id="r" fill="#ff0000"></rect>"`;
+exports[`$cinterp() via createStringProcessor interpolates alpha when colors have transparency 2`] = `"<rect id="r" fill="rgba(128, 0, 128, 0.5)"></rect>"`;
 
-exports[`cinterp() via createStringProcessor returns interpolated color at midpoint 1`] = `"<rect id="r" fill="#808080"></rect>"`;
+exports[`$cinterp() via createStringProcessor interpolates alpha when colors have transparency 3`] = `"<rect id="r" fill="#0000ff"></rect>"`;
+
+exports[`$cinterp() via createStringProcessor returns cmax color at vmax 1`] = `"<rect id="r" fill="#0000ff"></rect>"`;
+
+exports[`$cinterp() via createStringProcessor returns cmin color at vmin 1`] = `"<rect id="r" fill="#ff0000"></rect>"`;
+
+exports[`$cinterp() via createStringProcessor returns interpolated color at midpoint 1`] = `"<rect id="r" fill="#808080"></rect>"`;
+
+exports[`$interp() via createStringProcessor interpolates fractional values 1`] = `"<rect id="r" fill="#000000" data-val="12.5"></rect>"`;
+
+exports[`$interp() via createStringProcessor linearly interpolates at midpoint 1`] = `"<rect id="r" fill="#000000" data-val="100"></rect>"`;
+
+exports[`$interp() via createStringProcessor maps vmax to ymax 1`] = `"<rect id="r" fill="#000000" data-val="255"></rect>"`;
+
+exports[`$interp() via createStringProcessor maps vmin to ymin 1`] = `"<rect id="r" fill="#000000" data-val="0"></rect>"`;
 
 exports[`createStringProcessor with powerplant.svg adds alarm class to color group when alarm is truthy 1`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
@@ -246,7 +260,7 @@ exports[`createStringProcessor with powerplant.svg removes a class that was prev
 </svg>"
 `;
 
-exports[`createStringProcessor with powerplant.svg uses cinterp() to color the accent rect based on temperature 1`] = `
+exports[`createStringProcessor with powerplant.svg uses $cinterp() to color the accent rect based on temperature 1`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -270,7 +284,7 @@ exports[`createStringProcessor with powerplant.svg uses cinterp() to color the a
 </svg>"
 `;
 
-exports[`createStringProcessor with powerplant.svg uses cinterp() to color the accent rect based on temperature 2`] = `
+exports[`createStringProcessor with powerplant.svg uses $cinterp() to color the accent rect based on temperature 2`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -294,7 +308,7 @@ exports[`createStringProcessor with powerplant.svg uses cinterp() to color the a
 </svg>"
 `;
 
-exports[`createStringProcessor with powerplant.svg uses cinterp() to color the accent rect based on temperature 3`] = `
+exports[`createStringProcessor with powerplant.svg uses $cinterp() to color the accent rect based on temperature 3`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -318,7 +332,7 @@ exports[`createStringProcessor with powerplant.svg uses cinterp() to color the a
 </svg>"
 `;
 
-exports[`createStringProcessor with powerplant.svg uses interp() to drive SVG width from a data value 1`] = `
+exports[`createStringProcessor with powerplant.svg uses $interp() to drive SVG width from a data value 1`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -342,7 +356,7 @@ exports[`createStringProcessor with powerplant.svg uses interp() to drive SVG wi
 </svg>"
 `;
 
-exports[`createStringProcessor with powerplant.svg uses interp() to drive SVG width from a data value 2`] = `
+exports[`createStringProcessor with powerplant.svg uses $interp() to drive SVG width from a data value 2`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -366,7 +380,7 @@ exports[`createStringProcessor with powerplant.svg uses interp() to drive SVG wi
 </svg>"
 `;
 
-exports[`createStringProcessor with powerplant.svg uses interp() to drive SVG width from a data value 3`] = `
+exports[`createStringProcessor with powerplant.svg uses $interp() to drive SVG width from a data value 3`] = `
 "<!--?xml version="1.0" encoding="utf-8"?-->
 
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -389,11 +403,3 @@ exports[`createStringProcessor with powerplant.svg uses interp() to drive SVG wi
   </g>
 </svg>"
 `;
-
-exports[`interp() via createStringProcessor interpolates fractional values 1`] = `"<rect id="r" fill="#000000" data-val="12.5"></rect>"`;
-
-exports[`interp() via createStringProcessor linearly interpolates at midpoint 1`] = `"<rect id="r" fill="#000000" data-val="100"></rect>"`;
-
-exports[`interp() via createStringProcessor maps vmax to ymax 1`] = `"<rect id="r" fill="#000000" data-val="255"></rect>"`;
-
-exports[`interp() via createStringProcessor maps vmin to ymin 1`] = `"<rect id="r" fill="#000000" data-val="0"></rect>"`;
