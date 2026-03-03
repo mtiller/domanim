@@ -95,6 +95,9 @@ applied using Cheerio selectors applied to the string. The function returned by
 `createStringProcessor` should return a `string` (representing the full
 serialized HTML/SVG) instead of void (as in the case of `createProcessor`).
 
+Note that for optimization reasons, the `load` function from `Cheerio` should
+only be called once per invocation of `createStringProcessor`.
+
 The mapping should function exactly the same for this static case.
 
 ## Use Case: Numerical and Color Interpolation
@@ -118,3 +121,9 @@ function should return an interpolated color. Use the NPM package `color-parse`
 to parse `cmin` and `cmax` and then interpolate the components in the resulting
 object to arrive at the interpolated color. The interpolation should also
 handle interpolating alpha values if present.
+
+# Demo
+
+In a subdirectory called `demo` can you please use vite to create a demo web
+application that demonstrates how this library works by rendering
+`powerplant.svg` with modifications made using this library.

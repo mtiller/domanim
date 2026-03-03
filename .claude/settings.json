@@ -13,7 +13,8 @@
       "Bash(npm show jsonata version)",
       "Bash(node -e \"const j = require\\(''./node_modules/jsonata''\\); const e = j.default\\(''x''\\); console.log\\(typeof e.evaluate\\); const r = e.evaluate\\({x:42}\\); console.log\\(r instanceof Promise, typeof r.then\\)\")",
       "Bash(node --input-type=module:*)",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''main:'', d.get\\(''main''\\)\\); print\\(''exports:'', list\\(d.get\\(''exports'',{}\\).keys\\(\\)\\)[:5]\\)\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''main:'', d.get\\(''main''\\)\\); print\\(''exports:'', list\\(d.get\\(''exports'',{}\\).keys\\(\\)\\)[:5]\\)\")",
+      "Bash(npx vite build)"
     ]
   }
 }

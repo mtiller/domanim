@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Power Plant Monitor — dom-anim Demo</title>
+    <link rel="stylesheet" href="src/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Power Plant Monitor</h1>
+      <p>
+        Live DOM updates driven by
+        <strong>dom-anim</strong> and JSONata expressions
+      </p>
+    </header>
+
+    <main>
+      <section class="visualization">
+        <div id="svg-container"></div>
+      </section>
+
+      <section class="controls">
+        <div class="control-group">
+          <label for="temperature">Temperature</label>
+          <div class="slider-row">
+            <input type="range" id="temperature" min="0" max="100" value="30" />
+            <span class="value-display" id="temperature-display">30°C</span>
+          </div>
+          <p class="hint">
+            Accent colour: <code>$cinterp(temperature, 0, 100, '#00cc44', '#ea5a47')</code>
+          </p>
+        </div>
+
+        <div class="control-group">
+          <label for="load">Load</label>
+          <div class="slider-row">
+            <input type="range" id="load" min="0" max="100" value="60" />
+            <span class="value-display" id="load-display">60%</span>
+          </div>
+          <p class="hint">
+            Outline stroke: <code>$cinterp(load, 0, 100, '#222222', '#0066ff')</code>
+          </p>
+        </div>
+
+        <div class="control-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="alarm" />
+            <span>Alarm Active</span>
+          </label>
+          <p class="hint">
+            Toggles <code>.alarm</code> CSS class on <code>#color</code> group
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="src/main.ts"></script>
+  </body>
+</html>
