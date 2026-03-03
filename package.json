@@ -4,9 +4,18 @@
   "description": "Tool to animate DOM elements",
   "license": "MIT",
   "author": "Michael M. Tiller",
-  "type": "esm",
+  "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "test": "jest"
+  },
+  "dependencies": {
+    "jmespath": "^0.16.0"
+  },
+  "devDependencies": {
+    "@types/jmespath": "^0.15.1",
+    "typescript": "^5.0.0"
   }
 }
