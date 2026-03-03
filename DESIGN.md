@@ -1,0 +1,85 @@
+# Goal
+
+The goal of this project is to create a Javascript library to update the dom by
+mapping arbitrary data to specific DOM modifications.
+
+# Overall Design
+
+This library should provide a function that when passed a special "mapping"
+object (more on this in a moment), will return another function that, when
+passed an ordinary Javascript object (which we will refer to as "the data
+object") will use the data in that object to update DOM elements.
+
+Note that the "data object" could be any arbitrary data. The values in the
+mapping will be customized according to the expected "shape" of the data object.
+But the library itself will know nothing about the data object except that it
+was most likely parsed using `JSON.parse`.
+
+The function signature should be:
+
+```typescript
+export function createProcessor(mapping: Record<string, Application | Application[]>): (data: unknown) => void {
+    ...
+}
+```
+
+The function should work as follows.
+
+## Mapping
+
+The mapping object is simply a set of keys and values associated with them.
+These can be represented by a simple `Record<string, Application | Application[]>` in TypeScript.
+
+### Keys
+
+The keys in the mapping are just CSS selectors.
+
+### Values
+
+The value is either a single `Application` object or an array of `Application`
+objects.
+
+The `Application` type is defined in TypeScript as follows:
+
+```typescript
+export interface TextApplication {
+  to: "text";
+  // JMESPath expression used to evaluate the data object
+  expr: string;
+}
+
+export interface AttrApplication {
+  to: "attr";
+  // Which attribute is being targeted
+  attr: string;
+  // JMESPath expression used to evaluate the data object
+  expr: string;
+}
+
+export interface ClassApplication {
+  to: "class";
+  // Which classname should be toggled
+  name: string;
+  // JMESPath expression used to evaluate the data object
+  expr: string;
+}
+
+export type Application = TextApplication | AttrApplication | ClassApplication;
+```
+
+For each data object, the code should perform a `document.querySelectorAll` for
+each key value in the mapping. Then it should process each `Application` object.
+
+For a text application object, it should replace the `textContent` field of all
+nodes matching the selector with the stringified result of evaluating the `expr`
+field as a JMESPath expression using the data object as context.
+
+The attribute application should do the same thing except that the evaluation
+result should be injected as the value of the attribute specified by `attr` on
+each matching node.
+
+Finally, a class application should use the result of evaluating the JMESPath
+expression as a "truthy" value. If the result is truthy then the specified
+`class` (as indicated by the `name` field) should be added to the list of
+classes associated with the matching node. If it is falsy, the code should
+ensure that that class is not present on any of the matching nodes.
