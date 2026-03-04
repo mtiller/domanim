@@ -1,5 +1,7 @@
 # Goals
 
+![Animation](./reactive.png)
+
 Browsers have excellent support for SVG. Furthermore, SVG is an excellent medium
 for engineering drawing, schematics and diagrams.
 
