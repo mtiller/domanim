@@ -32,14 +32,14 @@ These can be represented by a simple `Record<string, Application | Application[]
 
 ### Keys
 
-The keys in the mapping are just CSS selectors. Since the keys are Jsonata
-expressions and Jsonata expressions can be compiled, the keys should be compiled
-once when the mapping is passed in for performance reasons.
+The keys in the mapping are just CSS selectors.
 
 ### Values
 
 The value is either a single `Application` object or an array of `Application`
-objects.
+objects. Since the values contain Jsonata expressions and Jsonata expressions
+can be compiled, the expressions that appear in the values should be compiled
+once when the mapping is passed in for performance reasons.
 
 The `Application` type is defined in TypeScript as follows:
 

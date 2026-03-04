@@ -32,7 +32,7 @@ function interp(
   vmin: number,
   vmax: number,
   ymin: number,
-  ymax: number
+  ymax: number,
 ): number {
   const t = (v - vmin) / (vmax - vmin);
   return ymin + t * (ymax - ymin);
@@ -46,15 +46,24 @@ function cinterp(
   vmin: number,
   vmax: number,
   cmin: string,
-  cmax: string
+  cmax: string,
 ): string {
   const parsedMin = colorParse(cmin);
   const parsedMax = colorParse(cmax);
   const clamp255 = (x: number) => Math.max(0, Math.min(255, Math.round(x)));
-  const r = clamp255(interp(v, vmin, vmax, parsedMin.values[0], parsedMax.values[0]));
-  const g = clamp255(interp(v, vmin, vmax, parsedMin.values[1], parsedMax.values[1]));
-  const b = clamp255(interp(v, vmin, vmax, parsedMin.values[2], parsedMax.values[2]));
-  const a = Math.max(0, Math.min(1, interp(v, vmin, vmax, parsedMin.alpha, parsedMax.alpha)));
+  const r = clamp255(
+    interp(v, vmin, vmax, parsedMin.values[0], parsedMax.values[0]),
+  );
+  const g = clamp255(
+    interp(v, vmin, vmax, parsedMin.values[1], parsedMax.values[1]),
+  );
+  const b = clamp255(
+    interp(v, vmin, vmax, parsedMin.values[2], parsedMax.values[2]),
+  );
+  const a = Math.max(
+    0,
+    Math.min(1, interp(v, vmin, vmax, parsedMin.alpha, parsedMax.alpha)),
+  );
   if (a < 1) {
     return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
@@ -73,18 +82,25 @@ type CompiledApp = { app: Application; compiled: jsonata.Expression };
 type CompiledMapping = Array<{ selector: string; compiledApps: CompiledApp[] }>;
 
 function compileMapping(
-  mapping: Record<string, Application | Application[]>
+  mapping: Record<string, Application | Application[]>,
 ): CompiledMapping {
   return Object.entries(mapping).map(([selector, applications]) => {
     const apps = Array.isArray(applications) ? applications : [applications];
     return {
       selector,
-      compiledApps: apps.map((app) => ({ app, compiled: compileExpr(app.expr) })),
+      compiledApps: apps.map((app) => ({
+        app,
+        compiled: compileExpr(app.expr),
+      })),
     };
   });
 }
 
-function applyResultToNode(node: Element, app: Application, result: unknown): void {
+function applyResultToNode(
+  node: Element,
+  app: Application,
+  result: unknown,
+): void {
   switch (app.to) {
     case "text":
       node.textContent = String(result ?? "");
@@ -103,7 +119,7 @@ function applyResultToNode(node: Element, app: Application, result: unknown): vo
 }
 
 export function createProcessor(
-  mapping: Record<string, Application | Application[]>
+  mapping: Record<string, Application | Application[]>,
 ): (data: unknown) => Promise<void> {
   const compiledMapping = compileMapping(mapping);
   return async (data: unknown) => {
@@ -121,7 +137,7 @@ export function createProcessor(
 
 export function createStringProcessor(
   mapping: Record<string, Application | Application[]>,
-  html: string
+  html: string,
 ): (data: unknown) => Promise<string> {
   const compiledMapping = compileMapping(mapping);
   return async (data: unknown) => {
