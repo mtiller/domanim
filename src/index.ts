@@ -118,13 +118,23 @@ function applyResultToNode(
   }
 }
 
+/**
+ * Build a processor that applies `mapping` to live DOM nodes.
+ *
+ * `root` is where the selectors are resolved, and defaults to `document` so
+ * existing callers are unaffected. Pass a narrower root to animate a document
+ * that `document.querySelectorAll` cannot reach or should not reach — most
+ * importantly a **shadow root**, whose contents are invisible to a global
+ * query, but equally a single container when several animations share a page.
+ */
 export function createProcessor(
   mapping: Record<string, Application | Application[]>,
+  root: ParentNode = document,
 ): (data: unknown) => Promise<void> {
   const compiledMapping = compileMapping(mapping);
   return async (data: unknown) => {
     for (const { selector, compiledApps } of compiledMapping) {
-      const nodes = document.querySelectorAll(selector);
+      const nodes = root.querySelectorAll(selector);
       for (const node of nodes) {
         for (const { app, compiled } of compiledApps) {
           const result = await compiled.evaluate(data as object);
